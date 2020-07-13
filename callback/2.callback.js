@@ -10,7 +10,7 @@ function after(times,callback){
     }
 }
 
-let out=after(2,(data)=>{
+let out=after(2,()=>{
     console.log(school)
 })
 

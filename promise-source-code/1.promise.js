@@ -1,5 +1,7 @@
 function Promise(executor){
     let self=this
+
+    // 保存成功和失败的值
     self.value=undefined
     self.reason=undefined
 
@@ -31,7 +33,7 @@ function Promise(executor){
         }
     }
 
-    executor(resolve,resolve)
+    executor(resolve,reject)
 }
 
 Promise.prototype.then=function(onFulfilled,onRejected){

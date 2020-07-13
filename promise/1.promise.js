@@ -2,10 +2,9 @@
 /**
  * Promise 是浏览器自带的，但是低版本的浏览器可能不支持
  * Promise是一个类 Promise使用的时候需要new Promise
- * new Promise需要传递一个executor执行器 (executor是同步执行的，立即执行)
- * 每个Promise的实例上都有一个then方法，then方法中有两个函数（成功函数和失败函数）
- * promise有三种状态 pedding resolved  rejected
- * 
+ * new Promise需要传递一个executor执行器 (executor是同步执行的，立即执行，相当于在方法后面加() )
+ * 每个Promise的实例上都有一个then方法，then方法中有两个函数（成功函数和失败函数）,如果在then中的失败函数已经捕获了err，下面的catch就不会捕获了
+ * promise有三种状态 pending resolved  rejected
  * 
  */
 
