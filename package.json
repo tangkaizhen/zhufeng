@@ -1,0 +1,20 @@
+{
+  "name": "zhufeng",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tempCodeRunnerFile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tangkaizhen/zhufeng.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tangkaizhen/zhufeng/issues"
+  },
+  "homepage": "https://github.com/tangkaizhen/zhufeng#readme"
+}

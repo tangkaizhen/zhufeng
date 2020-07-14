@@ -15,7 +15,7 @@ function Promise(executor){
     function resolve(value){
         
         if(self.status == 'pending'){
-            self.value=value
+            self.value = value
             self.status = 'resolved'
             self.onResolvedCallbacks.map(fn=>{
                 fn()
@@ -25,13 +25,15 @@ function Promise(executor){
     }
     function reject(reason){
         if(self.status == 'pending'){
-            self.reason=reason
+            self.reason = reason
             self.status = 'rejected'
             self.onRejectCallbacks.map(fn=>{
                 fn()
             })
         }
     }
+    
+    // try-catch只适用于同步代码，异步代码不能用。
 
     try {
         executor(resolve,reject)
@@ -47,7 +49,7 @@ function resolvePromise(x,promise2,resolve,reject){
         return reject(new TypeError('自己不能等待自己'))
     }
 
-    // 如果x是一个对象或者方法，就有可能是一个promise
+    // 如果x是一个对象或者方法，就有可能是一个promise 
     if(x != null && (typeof x == 'function' || typeof x == 'object')){
         try {
             let then = x.then
@@ -62,8 +64,8 @@ function resolvePromise(x,promise2,resolve,reject){
                 resolve(x)
             }
 
-        } catch (error) {
-            resolve(error)    
+        } catch (error) { 
+            reject(error)    
         }
 
     }else{
@@ -86,24 +88,49 @@ Promise.prototype.then=function(onFulfilled,onRejected){
              * 如果是返回值是普通值，就让下一个promise变成成功态
              */
 
-            let x = onFulfilled(self.value)
-            resolvePromise(x,promise2,resolve,reject)
+            setTimeout(()=>{
+                try {
+                    let x = onFulfilled(self.value)
+                    resolvePromise(x,promise2,resolve,reject)
+                } catch (error) {
+                    reject(error)
+                }
+            },0)
         }
 
         if(self.status == 'rejected'){
-            let x = onRejected(self.reason)
-            resolvePromise(x,promise2,resolve,reject)
+            setTimeout(()=>{
+                try {
+                    let x = onRejected(self.reason)
+                    resolvePromise(x,promise2,resolve,reject)
+                } catch (error) {
+                    reject(error)
+                }
+            },0)
         }
 
         if(self.status == 'pending'){
             self.onResolvedCallbacks.push(function(){
-                let x = onFulfilled(self.value)
-                resolvePromise(x,promise2,resolve,reject)
+                setTimeout(()=>{
+                    try {
+                        let x = onFulfilled(self.value)
+                        resolvePromise(x,promise2,resolve,reject)
+                    } catch (error) {
+                        reject(error)
+                    }
+                    
+                },0)
             })  
     
             self.onRejectCallbacks.push(function(){
-                let x = onRejected(self.reason)
-                resolvePromise(x,promise2,resolve,reject)
+                setTimeout(()=>{
+                    try {
+                        let x = onRejected(self.reason)
+                        resolvePromise(x,promise2,resolve,reject)
+                    } catch (error) {
+                        reject(error)
+                    }
+                },0)
             })
         }
 
@@ -111,4 +138,5 @@ Promise.prototype.then=function(onFulfilled,onRejected){
 
     return promise2
 }
+
 module.exports=Promise
