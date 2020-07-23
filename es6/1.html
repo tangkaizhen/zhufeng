@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #box .box{
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: red;
+        position: absolute;
+        left: 0;
+    }
+    .box1{
+        top: 100px;
+    }
+    .box2{
+        top: 250px;
+    }
+    .box3{
+        top: 400px;
+    }
+</style>
+</head>
+<body>
+    <div id="box">
+        <div class="box box1"></div>
+        <div class="box box2"></div>
+        <div class="box box3"></div>
+    </div>
+<script>
+    function move(ele,target,callback){
+        let left =0
+        let timer = setInterval(()=>{
+            if(left>=target){
+                clearInterval(timer)
+                return callback()
+            }
+            left++
+            ele.style.left=left+'px'
+        },5)
+    }
+    let $ = document.querySelector.bind(document)
+
+    // 下面这种多层嵌套，不易维护，易引起回调地域，可以通过promise改进
+    // move($(".box1"),500,()=>{
+    //     move($(".box2"),500,()=>{
+    //         move($(".box3"),500,()=>{
+        
+    //         })
+    //     })
+    // })
+
+    function move(ele,target){
+        return new Promise((resolve,reject)=>{
+            let left =0
+            let timer = setInterval(()=>{
+                if(left>=target){
+                    clearInterval(timer)
+                    return resolve()
+                }
+                left++
+                ele.style.left=left+'px'
+            },5)
+        })
+    }
+
+    move($(".box1"),500).then(()=>{
+        return move($(".box2"),500)
+    }).then(()=>{
+        return move($(".box3"),500)
+    }).then(()=>{
+        alert('ok')
+    })
+</script>    
+</body>
+</html>
